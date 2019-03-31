@@ -1,0 +1,10 @@
+sudo: required # Indicates that everytime we want to make a change superuser is necessary
+
+services:
+  - docker # This tells travis we need a copy of docker for the container
+
+before_install: # This commands are executed before the tests are ran
+  - docker build -t estebanverbel/docker-react -f Dockerfile.dev . # Builds the docker image using Dockerfile.dev
+
+scrip: # This section has the set of commands that need to be executed to run our tests suite
+  - docker run estebanverbel/docker-react npm run test -- --coverage
