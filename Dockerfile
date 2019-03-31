@@ -13,4 +13,7 @@ RUN npm run build
 # This is for production
 FROM nginx
 
+# This tells beanstalk what port to expose for incomming traffic. Necessary for production, not for dev
+EXPOSE 80
+
 COPY --from=builder /app/build /usr/share/nginx/html
