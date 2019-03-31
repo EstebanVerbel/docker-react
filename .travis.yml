@@ -8,3 +8,17 @@ before_install: # This commands are executed before the tests are ran
 
 script: # This section has the set of commands that need to be executed to run our tests suite
   - docker run estebanverbel/docker-react npm run test -- --coverage
+
+deploy: # Here we're going to add instructions to tell Travis how to deploy the application to aws
+  provider: elasticbeanstalk # This is the load balancer picker in aws
+  region: "us-east-2" # This is the region where we created the elasticbeanstalk instance
+  app: "docker-react" # This app name must match the name in aws
+  env: "DockerReact-env" # This name is generated in aws. It can be found right after app name
+  bucket_name: "elasticbeanstalk-us-east-2-371630972128" # This is found in aws. Click on services, search for s3, select, on the list 
+  # ... displayed click on the application created, and to the page taken on the top the bucket name will be displayed right beside Amazon S3 > here
+  bucket_path: "docker-react" # It's by default the app name. It can be found in the bucket_name section but won't be there until first deploy
+  on:
+    branch: master # This means that the application will be deployed only when commits to master branch, not dev branch
+  access_key_id: $AWS_ACCESS_KEY
+  secret_access_key:
+    secure: "$AWS_SECRET_KEY" # Note: To prevent entering keys here, they are stored as env variables in Travis (Created by me)
